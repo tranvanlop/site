@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Mockup Window</title>
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #eef2f5;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      color: #333;
+    }
+
+    /* Khung cửa sổ chính (Window Frame) */
+    .window-container {
+      width: 100%;
+      max-width: 950px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+      border: 1px solid #e1e8ed;
+      overflow: hidden;
+    }
+
+    /* Thanh điều khiển cửa sổ góc trên */
+    .window-header {
+      background: #f8fafc;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e2e8f0;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      color: #64748b;
+    }
+    .window-dots {
+      display: flex;
+      gap: 8px;
+    }
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
+    
+    .window-title {
+      font-weight: 500;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+    }
+
+    /* Nội dung bên trong cửa sổ */
+    .window-body {
+      padding: 24px;
+    }
+
+    /* Profile Header & Banner */
+    .profile-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .banner {
+      height: 140px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .banner-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.4);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      backdrop-filter: blur(4px);
+    }
+    .profile-info {
+      padding: 0 24px 20px 24px;
+      position: relative;
+    }
+    .avatar-wrapper {
+      position: relative;
+      top: -40px;
+      margin-bottom: -30px;
+      display: inline-block;
+    }
+    .avatar {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 4px solid #fff;
+      object-fit: cover;
+    }
+    .user-name {
+      font-size: 22px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #0f172a;
+    }
+    .verified-icon {
+      color: #3b82f6;
+      font-size: 16px;
+    }
+    .user-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .tag {
+      background: #e2e8f0;
+      color: #475569;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: 'Fira Code', monospace;
+    }
+
+    /* Bố cục Grid 2 cột */
+    .grid-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 768px) {
+      .grid-container {
+        grid-template-columns: 1.6fr 1fr;
+      }
+    }
+
+    /* Các Box thông tin (Section Box) */
+    .section-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+    .section-box:last-child {
+      margin-bottom: 0;
+    }
+    .section-title {
+      font-size: 13px;
+      font-family: 'Fira Code', monospace;
+      color: #3b82f6;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .bio-text {
+      font-size: 14px;
+      color: #475569;
+      line-height: 1.6;
+    }
+
+    /* Tech Stack Cards Grid */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .tech-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      padding: 10px 12px;
+      border-radius: 8px;
+    }
+    .tech-card-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+    .tech-card-sub {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+
+    /* Link liên kết / Social Buttons */
+    .links-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .social-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      color: #334155;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .social-btn:hover {
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
+
+    /* Lanyard / Music Player Widget */
+    .player-widget {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .player-cover {
+      width: 48px;
+      height: 48px;
+      border-radius: 6px;
+      background: #64748b;
+      object-fit: cover;
+    }
+    .player-details {
+      flex: 1;
+      overflow: hidden;
+    }
+    .track-title {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .artist-name {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* Footer cửa sổ */
+    .window-footer {
+      background: #f8fafc;
+      padding: 8px 16px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      font-family: 'Fira Code', monospace;
+      font-size: 11px;
+      color: #94a3b8;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Khung Cửa Sổ Máy Tính -->
+  <div class="window-container">
+    
+    <!-- Thanh Tiêu Đề Cửa Sổ -->
+    <div class="window-header">
+      <div class="window-dots">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+      </div>
+      <div class="window-title">pid: 8421 • alex • active</div>
+      <div class="status-badge">
+        <span class="status-dot"></span> online
+      </div>
+    </div>
+
+    <!-- Thân Cửa Sổ -->
+    <div class="window-body">
+      
+      <!-- Thông Tin Cá Nhân & Ảnh Bìa -->
+      <div class="profile-card">
+        <div class="banner">
+          <span class="banner-badge"><i class="fa-brands fa-discord"></i> discord lanyard live</span>
+        </div>
+        <div class="profile-info">
+          <div class="avatar-wrapper">
+            <img src="https://via.placeholder.com/150" alt="Avatar" class="avatar">
+          </div>
+          <h1 class="user-name">
+            Nguyễn Hoàng Anh 
+            <i class="fa-solid fa-circle-check verified-icon"></i>
+          </h1>
+          <div class="user-tags">
+            <span class="tag">@hoanganh-alex</span>
+            <span class="tag"><i class="fa-solid fa-code"></i> full stack developer</span>
+            <span class="tag"><i class="fa-solid fa-location-dot"></i> việt nam</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bố Cục 2 Cột -->
+      <div class="grid-container">
+        
+        <!-- Cột Trái -->
+        <div class="left-col">
+          
+          <!-- Giới thiệu -->
+          <div class="section-box">
+            <div class="section-title">>_ system greeting & bio</div>
+            <p class="bio-text">
+              > chào buổi tối, chill & code.<br><br>
+              Là một lập trình viên Gen Z đam mê nghiên cứu, liên tục học hỏi và phát triển các giải pháp sáng tạo. Chuyên sâu về Full Stack (web/app), AI engineering, game dev & reverse engineering.
+            </p>
+          </div>
+
+          <!-- Kỹ năng (Tech Stack) -->
+          <div class="section-box">
+            <div class="section-title"><i class="fa-solid fa-layer-group"></i> tech stack & focus domains</div>
+            <div class="tech-grid">
+              <div class="tech-card">
+                <div class="tech-card-title">Full Stack</div>
+                <div class="tech-card-sub">web • app • api ecosystem</div>
+              </div>
+              <div class="tech-card">
+                <div class="tech-card-title">AI Engineering</div>
+                <div class="tech-card-sub">llm • agentic • deep learning</div>
+              </div>
+              <div class="tech-card">
+                <div class="tech-card-title">Security & RE</div>
+                <div class="tech-card-sub">c/c++ • binary • reverse</div>
+              </div>
+              <div class="tech-card">
+                <div class="tech-card-title">Game Dev</div>
+                <div class="tech-card-sub">graphics • engines • physics</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mạng Xã Hội -->
+          <div class="section-box">
+            <div class="section-title"><i class="fa-solid fa-link"></i> direct connections</div>
+            <div class="links-grid">
+              <a href="#" class="social-btn"><i class="fa-brands fa-github"></i> github</a>
+              <a href="#" class="social-btn"><i class="fa-brands fa-discord"></i> discord</a>
+              <a href="#" class="social-btn"><i class="fa-brands fa-spotify"></i> spotify</a>
+              <a href="#" class="social-btn"><i class="fa-brands fa-tiktok"></i> tiktok</a>
+              <a href="#" class="social-btn"><i class="fa-brands fa-facebook"></i> facebook</a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Cột Phải -->
+        <div class="right-col">
+          
+          <!-- Trạng Thái Discord (Lanyard) -->
+          <div class="section-box">
+            <div class="section-title"><i class="fa-brands fa-discord"></i> discord realtime presence</div>
+            <div style="font-size: 13px; color: #64748b;">
+              Status: <span style="color: #10b981; font-weight: 600;">Coding & Chill</span>
+            </div>
+          </div>
+
+          <!-- Trình Phát Nhạc Spotify -->
+          <div class="section-box">
+            <div class="section-title"><i class="fa-solid fa-music"></i> playing status</div>
+            <div class="player-widget">
+              <img src="https://via.placeholder.com/60" alt="Cover" class="player-cover">
+              <div class="player-details">
+                <div class="track-title">Tên Bài Hát Đang Nghe</div>
+                <div class="artist-name">Tên Ca Sĩ / Nghệ Sĩ</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Thanh Trạng Thái Dưới Cùng (Footer) -->
+    <div class="window-footer">
+      <span>19:30:16 (GMT+7)</span>
+      <span>build: chamfer-profile-v2.4</span>
+      <span>18ms • online</span>
+    </div>
+
+  </div>
+
+</body>
+</html>
